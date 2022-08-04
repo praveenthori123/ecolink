@@ -1,0 +1,73 @@
+<app-header></app-header>
+<section class="blog-section">
+    <div class="container">
+        <div class="responsive-blog-search">
+            <span class="p-input-icon-right">
+                <i class="pi pi-search"></i>
+                <input type="text" placeholder="Search the blog" pInputText />
+            </span>
+        </div>
+        <div class="blog-calltoaction">
+            <div class="blog">
+                <div class="head-calltoaction" [ngStyle]="{'background-image': 'url(' + imageurl + 'blog_1.jpeg)'}">
+                    <div class="shop-chemical">
+                        <button>
+                            <a (click)="routeOnSamePage('/shop')">Shop Chemicals</a>
+                        </button>
+                    </div>
+                </div>
+                <ng-container *ngFor="let items of getBlog">
+                    <div class="blog-image card">
+                        <img src="{{items.data.image}}" alt="">
+                    </div>
+                    <!-- <h2>{{items.data.title}}</h2> -->
+                    <div class="blog-text">
+                        <div [innerHTML]="this.__apiService.getSantizedData(items.data.description)"></div>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="calltoactionshop">
+                <div class="chemicalscalltoaction" [ngStyle]="{'background-image': 'url(' + imageurl + 'blog_2.jpeg)'}">
+                    <div class="chemical-div">
+                        <button>
+                            <a (click)="routeOnSamePage('/shop')">Shop Chemicals</a>
+                        </button>
+                    </div>
+                </div>
+                <div class="blog-search">
+                    <span class="p-input-icon-right">
+                        <i class="pi pi-search"></i>
+                        <input type="text" placeholder="Search the blog" pInputText />
+                    </span>
+                </div>
+                <div class="ctasection" [ngStyle]="{'background-image': 'url(' + imageurl + 'blog_3.jpeg)'}">
+                    <div class="innerctadiv">
+                        <button>
+                            <a (click)="routeOnSamePage('/shop')">Shop Chemicals</a>
+                        </button>
+                    </div>
+                </div>
+                <div class="inner_sidebar extralight-border">
+                    <section id="text-5" class="widget clearfix widget_text">
+                        <div class="textwidget">
+                            <a class="shopButton2020" routerLink="/shop">SHOP<i class="fa fa-shopping-cart"></i></a>
+                            <br>
+                            <a class="requestButton2020" (click)="routeOnSamePage('contact/request ')">REQUEST A
+                                SAMPLE<i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                            </a><br>
+                            <a class="pdsButton2020" (click)="routeOnSamePage('contact/support ')">REQUEST PDS /
+                                TDS<i class="fa fa-calculator" aria-hidden="true"></i>
+                            </a><br>
+                            <a class="contactButton2020" (click)="routeOnSamePage('contact ')">CONTACT US<i
+                                    class="fa fa-envelope" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                        <span class="seperator extralight-border"></span>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<app-trending-post></app-trending-post>
+<app-footer></app-footer>

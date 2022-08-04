@@ -1,0 +1,343 @@
+<!-- shimmar effect on -->
+<ng-container *ngIf="formShimmer">
+    <form>
+        <div class="mt-3" class="form-shimmer">
+            <ngx-shimmer-loading width="'100%'"></ngx-shimmer-loading>
+        </div>
+        <div class="mt-3" class="form-shimmer">
+            <ngx-shimmer-loading width="'100%'"></ngx-shimmer-loading>
+        </div>
+        <div class="mt-3" class="form-shimmer">
+            <ngx-shimmer-loading width="'100%'"></ngx-shimmer-loading>
+        </div>
+        <div class="mt-3" class="form-shimmer">
+            <ngx-shimmer-loading width="'100%'"></ngx-shimmer-loading>
+        </div>
+        <div class="mt-3" class="form-shimmer">
+            <ngx-shimmer-loading width="'100%'"></ngx-shimmer-loading>
+        </div>
+        <div class="mt-3" class="form-shimmer">
+            <ngx-shimmer-loading width="'100%'"></ngx-shimmer-loading>
+        </div>
+        <div class="mt-3" class="form-shimmer">
+            <ngx-shimmer-loading width="'100%'"></ngx-shimmer-loading>
+        </div>
+        <div class="mt-3" class="form-shimmer">
+            <ngx-shimmer-loading width="'100%'"></ngx-shimmer-loading>
+        </div>
+    </form>
+</ng-container>
+<!-- shimmar effect off -->
+<ng-container *ngIf="UserLogin && !formShimmer">
+<div class="row" style="padding: 10px 0;">
+    <ng-container *ngFor="let item of getAllUserAddresses; let i = index">
+        <div class="col-lg-6" style="padding-bottom: 10px;">
+            <div class="form-check" style="font-size: 14px;height: 100%;">
+                <div class="card-radio" style="justify-content: center;">
+                    <p-radioButton name="payment_method{{i}}" [value]="i" (click)="getRadioButtonValue()"
+                        [(ngModel)]="selectedAddress" inputId="payment_method{{i}}" style="padding: 5px 10px;">
+                    </p-radioButton>
+
+                    <div class="address_detail px-3">
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            {{item.landmark?item.landmark+',':''}} {{item.address}}
+                        </label><br>
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            {{item.city}}, {{item.state}}
+                        </label><br>
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            ({{item.pincode}})
+                        </label><br>
+                    </div>
+                </div>
+
+                <div style="width: 100%;justify-content: center; text-align: center;">
+                    <button class="edit_address" (click)="UpdateToggle()">Edit</button>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>
+
+
+<!-- user detail form -->
+
+<div style="display:flex;align-items: center;cursor: pointer;" data-toggle="collapse" data-target="#collapseOne"
+    aria-expanded="true" aria-controls="collapseOne" (click)="openform()">
+    <h5 style="padding: 20px 0;margin: 0;">Add New Address</h5>
+    <i class="fa fa-plus" style="border: 1px solid gray;border-radius:100%;margin-left: 10px;padding: 2px 3px;"></i>
+</div>
+<form #shippingform="ngForm" id="collapseOne" class="collapse" aria-labelledby="headingOne" *ngIf="formCheck">
+    <ng-container *ngIf="resAddressMsg.length>0">
+        <div *ngIf="resAddressMsgCheck=='danger'" class="alert alert-danger" role="alert" style="justify-content: space-between;
+                    display: flex;">
+            {{ resAddressMsg }}
+            <span class="icon-class"><i class="fa fa-close" (click)="close()" style="cursor: pointer;"></i></span>
+        </div>
+        <div *ngIf="resAddressMsgCheck=='success'" class="alert alert-success" role="alert">
+            {{ resAddressMsg }}
+            <span class="icon-class"><i class="fa fa-close" (click)="close()" style="cursor: pointer;"></i></span>
+        </div>
+    </ng-container>
+
+
+    <div class="row">
+        <div class="col-lg-6 col-12 mb-3">
+            <label for="name">Full Name</label>
+            <input type="text" class="form-control mt-2" placeholder="Full Name" id="shippingname" name="shippingname"
+                [(ngModel)]="CheckoutProductBackUp.name" (blur)="formvalid()" required #data>
+        </div>
+        <div class="col-lg-6 col-12 mb-3">
+            <label for="Email Address">Email Address</label>
+            <input type="text" class="form-control mt-2" placeholder="Email Address" id="shippingEmail-Address"
+                name="shippingemail" [(ngModel)]="CheckoutProductBackUp.email" required (input)="validateEmail1($event)"
+                (blur)="formvalid()">
+            <h6 class="text-danger" *ngIf="invalidEmail1">
+                {{ invalidEmail1 ? "Invalid Email" : "" }}
+            </h6>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 col-12 mb-3">
+            <label for="Phone">Mobile No.</label>
+            <input type="text" maxlength="10" class="form-control mt-2" placeholder="Mobile No" name="shippingmobile"
+                [(ngModel)]="CheckoutProductBackUp.mobile" required (input)="validateMobile1($event)"
+                (keydown)="inputMobile1($event)" (blur)="formvalid()">
+            <h6 class="text-danger" *ngIf="invalidMobile1">
+                {{ invalidMobile1 ? "Invalid Mobile" : "" }}
+            </h6>
+        </div>
+        <div class="col-lg-6 col-12 mb-3">
+            <label for="streetaddress">Street Address</label>
+            <input type="text" class="form-control mt-2" placeholder="Street Address" name="shippingstreetaddress"
+                [(ngModel)]="CheckoutProductBackUp.address" (blur)="formvalid()" required>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 col-12 mb-3">
+            <label for="Town-city">Town / City</label>
+            <input type="text" class="form-control mt-2" placeholder="Town / City" name="shippingcity"
+                [(ngModel)]="CheckoutProductBackUp.city" (blur)="formvalid()" required>
+        </div>
+        <div class="col-lg-6 col-12 mb-3">
+            <label for="state">State</label>
+            <input type="text" class="form-control mt-2" placeholder="State / County" name="shippingstate"
+                [(ngModel)]="CheckoutProductBackUp.state" (blur)="formvalid()" required>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 col-12 mb-3">
+            <label for="Postcode">ZIP Code</label>
+            <input type="text" class="form-control mt-2" placeholder="ZIP Code" name="shippingpincode"
+                [(ngModel)]="CheckoutProductBackUp.pincode" (input)="validatePincode($event)"
+                (keydown)="inputPincode($event)" (blur)="formvalid()" [maxLength]="6" required>
+            <div *ngIf="pincodeerror" class="text-danger">{{pincodeerror}}</div>
+        </div>
+        <div class="col-lg-6 col-12 mb-3">
+            <label for="countryname">Country</label>
+            <input type="text" class="form-control mt-2" placeholder="Country / Region" id="shippingcountry"
+                name="shippingcountryname" (blur)="formvalid()" [(ngModel)]="CheckoutProductBackUp.country" required>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 col-12 mb-3">
+            <label for="landmark">LandMark</label>
+            <input type="text" class="form-control mt-2" placeholder="Land Mark" name="landmark"
+                [(ngModel)]="CheckoutProductBackUp.landmark" (blur)="formvalid()" required>
+        </div>
+        <div class="col-lg-6 col-12 mb-3" *ngIf="UserLogin == null">
+            <label for="Password">Password</label>
+            <input type="password" class="form-control mt-2" placeholder="Password" id="password" name="password"
+                [(ngModel)]="password" (blur)="formvalid()" required>
+        </div>
+    </div>
+    <div class="row" *ngIf="UserLogin == null">
+        <div class="col-lg-6 col-12 mb-3">
+            <label for="confirm_password">Confirm Password</label>
+            <input type="password" class="form-control mt-2" placeholder="Confirm Password" id="confirm_password"
+                name="confirm_password" [(ngModel)]="confirm_password" (blur)="formvalid()" required>
+            <h6 class="text-danger" *ngIf="confirm_password">
+                {{ password === "" && confirm_password != "" ? "Enter password" : "" }} {{ password != "" &&
+                password != confirm_password ? "Password Not Match" : "" }}
+            </h6>
+        </div>
+        <div class="col-lg-6 col-md-12 mb-3" *ngIf="UserLogin == null">
+            <div>
+                <label for="taxes">Tax Exemption</label><br>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-6"><input type="radio" id="radio1" name="radio2" value="1" [(ngModel)]="radio1"
+                            (blur)="formvalid()" />
+                        Yes</div>
+                    <div class="col-6"><input type="radio" id="radio2" name="radio2" value="0" [(ngModel)]="radio1"
+                            (blur)="formvalid()" />
+                        No <br></div>
+                    <ng-container *ngIf="errormsg">
+                        <div class="text-danger col-12">*{{errormsg}}</div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+    <h3 style="padding: 20px 0;">Billing Details</h3>
+    <form #signupform="ngForm" *ngFor="let data of userBillingDetail">
+            <div class="address-card">
+                <div class="address-text">
+                    <div class="username">
+                        <h6>Name :</h6>
+                        <h6>{{data.name | titlecase}}</h6>
+                    </div>
+                    <div class="username">
+                        <h6>Email :</h6>
+                        <p>{{data.email}}</p>
+                    </div>
+                    <div class="username">
+                        <h6>Mobile No. :</h6>
+                        <p>{{data.mobile}}</p>
+                    </div>
+                    <div class="username">
+                        <h6>Address :</h6>
+                        <p>{{data.landmark?(data.landmark | titlecase) +',':''}}{{data.address | titlecase}}</p>
+                    </div>
+                    <div class="username">
+                        <h6>City :</h6>
+                        <p>{{data.city | titlecase}}</p>
+                    </div>
+                    <div class="username">
+                        <h6>State :</h6>
+                        <p>{{data.state | titlecase}}({{data.pincode}})</p>
+                    </div>
+                    <div class="username">
+                        <h6>Country :</h6>
+                        <p>{{data.country | titlecase}}</p>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <button (click)="editbillingdetail()" class="edit_billing_address">Edit Billing
+                                Address</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </form>
+</ng-container>
+
+
+
+<ng-container *ngIf="!UserLogin">
+    <form #shippingform="ngForm">
+        <ng-container *ngIf="resAddressMsg.length>0">
+            <div *ngIf="resAddressMsgCheck=='danger'" class="alert alert-danger" role="alert" style="justify-content: space-between;
+                        display: flex;">
+                {{ resAddressMsg }}
+                <span class="icon-class"><i class="fa fa-close" (click)="close()" style="cursor: pointer;"></i></span>
+            </div>
+            <div *ngIf="resAddressMsgCheck=='success'" class="alert alert-success" role="alert">
+                {{ resAddressMsg }}
+                <span class="icon-class"><i class="fa fa-close" (click)="close()" style="cursor: pointer;"></i></span>
+            </div>
+        </ng-container>
+    
+    
+        <div class="row">
+            <div class="col-lg-6 col-12 mb-3">
+                <label for="name">Full Name</label>
+                <input type="text" class="form-control mt-2" placeholder="Full Name" id="shippingname" name="shippingname"
+                    [(ngModel)]="nonloggedinuser.name" (blur)="formvalid()" required #data>
+            </div>
+            <div class="col-lg-6 col-12 mb-3">
+                <label for="Email Address">Email Address</label>
+                <input type="text" class="form-control mt-2" placeholder="Email Address" id="shippingEmail-Address"
+                    name="shippingemail" [(ngModel)]="nonloggedinuser.email" required (input)="validateEmail1($event)"
+                    (blur)="formvalid()">
+                <h6 class="text-danger" *ngIf="invalidEmail1">
+                    {{ invalidEmail1 ? "Invalid Email" : "" }}
+                </h6>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-12 mb-3">
+                <label for="Phone">Mobile No.</label>
+                <input type="text" maxlength="10" class="form-control mt-2" placeholder="Mobile No" name="shippingmobile"
+                    [(ngModel)]="nonloggedinuser.mobile" required (input)="validateMobile1($event)"
+                    (keydown)="inputMobile1($event)" (blur)="formvalid()">
+                <h6 class="text-danger" *ngIf="invalidMobile1">
+                    {{ invalidMobile1 ? "Invalid Mobile" : "" }}
+                </h6>
+            </div>
+            <div class="col-lg-6 col-12 mb-3">
+                <label for="streetaddress">Street Address</label>
+                <input type="text" class="form-control mt-2" placeholder="Street Address" name="shippingstreetaddress"
+                    [(ngModel)]="nonloggedinuser.address" (blur)="formvalid()" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-12 mb-3">
+                <label for="Town-city">Town / City</label>
+                <input type="text" class="form-control mt-2" placeholder="Town / City" name="shippingcity"
+                    [(ngModel)]="nonloggedinuser.city" (blur)="formvalid()" required>
+            </div>
+            <div class="col-lg-6 col-12 mb-3">
+                <label for="state">State</label>
+                <input type="text" class="form-control mt-2" placeholder="State / County" name="shippingstate"
+                    [(ngModel)]="nonloggedinuser.state" (blur)="formvalid()" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-12 mb-3">
+                <label for="Postcode">ZIP Code</label>
+                <input type="text" class="form-control mt-2" placeholder="ZIP Code" name="shippingpincode"
+                    [(ngModel)]="nonloggedinuser.pincode" (input)="validatePincode($event)"
+                    (keydown)="inputPincode($event)" (blur)="formvalid()" [maxLength]="6" required>
+                <div *ngIf="pincodeerror" class="text-danger">{{pincodeerror}}</div>
+            </div>
+            <div class="col-lg-6 col-12 mb-3">
+                <label for="countryname">Country</label>
+                <input type="text" class="form-control mt-2" placeholder="Country / Region" id="shippingcountry"
+                    name="shippingcountryname" (blur)="formvalid()" [(ngModel)]="nonloggedinuser.country" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-12 mb-3">
+                <label for="landmark">LandMark</label>
+                <input type="text" class="form-control mt-2" placeholder="Land Mark" name="landmark"
+                    [(ngModel)]="nonloggedinuser.landmark" (blur)="formvalid()" required>
+            </div>
+            <div class="col-lg-6 col-12 mb-3" *ngIf="UserLogin == null">
+                <label for="Password">Password</label>
+                <input type="password" class="form-control mt-2" placeholder="Password" id="password" name="password"
+                    [(ngModel)]="nonloggedinuser.password" (blur)="formvalid()" required>
+            </div>
+        </div>
+        <div class="row" *ngIf="UserLogin == null">
+            <div class="col-lg-6 col-12 mb-3">
+                <label for="confirm_password">Confirm Password</label>
+                <input type="password" class="form-control mt-2" placeholder="Confirm Password" id="confirm_password"
+                    name="confirm_password" [(ngModel)]="nonloggedinuser.confirm_password" (blur)="formvalid()" required>
+                <h6 class="text-danger" *ngIf="confirm_password">
+                    {{ password === "" && confirm_password != "" ? "Enter password" : "" }} {{ password != "" &&
+                    password != confirm_password ? "Password Not Match" : "" }}
+                </h6>
+            </div>
+            <div class="col-lg-6 col-md-12 mb-3" *ngIf="UserLogin == null">
+                <div>
+                    <label for="taxes">Tax Exemption</label><br>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-6"><input type="radio" id="radio1" name="radio2" value="1" [(ngModel)]="nonloggedinuser.tax_exempt"
+                                (blur)="formvalid()" (click)="gotoprofile(1)" />
+                            Yes</div>
+                        <div class="col-6"><input type="radio" id="radio2" name="radio2" value="0" [(ngModel)]="nonloggedinuser.tax_exempt"
+                                (blur)="formvalid()" (click)="gotoprofile(0)" />
+                            No <br></div>
+                        <ng-container *ngIf="errormsg">
+                            <div class="text-danger col-12">*{{errormsg}}</div>
+                        </ng-container>
+                        <ng-container *ngIf="checkfortexmsg">
+                            <div class="text-danger col-12">*If you want to select Tax Exemption as yes than click on below link to SignUp. <a routerLink="/profile" (click)="clicktosignup()">Click Here</a></div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</ng-container>

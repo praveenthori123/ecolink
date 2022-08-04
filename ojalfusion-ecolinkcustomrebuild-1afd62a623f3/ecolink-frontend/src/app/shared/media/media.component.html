@@ -1,0 +1,107 @@
+<app-header></app-header>
+<ng-container *ngIf="innershimmerLoad">
+    <section class="media-section">
+        <div class="container">
+            <div class="head-section">
+                <ngx-shimmer-loading [shape]="'square'" width="'100%'"></ngx-shimmer-loading>
+
+            </div>
+        </div>
+    </section>
+    <section class="media-banner" *ngIf="!backupBlog.data">
+        <div class="container">
+            <div class="media-calltoaction">
+                <ngx-shimmer-loading [shape]="'square'" width="'100%'"></ngx-shimmer-loading>
+                <div class="calltoaction">
+                    <ngx-shimmer-loading [shape]="'square'" width="'100%'"></ngx-shimmer-loading>
+                </div>
+            </div>
+        </div>
+    </section>
+</ng-container>
+<ng-container *ngIf="!innershimmerLoad">
+    <!-- <section class="media-section">
+        <div class="container">
+            <div class="head-section">
+                <span class="p-input-icon-right">
+                    <i class="pi pi-search" (click)="getInputValue()"></i>
+                    <input type="text" placeholder="Search the blog" [(ngModel)]="searchValue" pInputText
+                        (input)="getSearchedBlog()" />
+                </span>
+                <div *ngIf="showSuggestedList" class="ListSuggested">
+                    <ul *ngFor="let value of backupBlog.data | title:searchValue">
+                        <li (click)="getInputSelectedValue(value.title)" style="list-style:none;text-align: left;">>
+                            {{value.title}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section> -->
+    <!-- <ng-container  *ngIf="backupBlog.data">
+    <div class="row">
+        <ng-container *ngFor="let data of [].constructor(1)">
+            <div class="mt-3">
+                <ngx-shimmer-loading [shape]="'square'" width="'100%'"></ngx-shimmer-loading>
+            </div>
+        </ng-container>
+    </div>
+</ng-container>
+<ng-container  *ngIf="!backupBlog.data">
+    <div class="row">
+        <ng-container *ngFor="let data of [].constructor(1)">
+            <div class="mt-3">
+                <ngx-shimmer-loading [shape]="'square'" width="'100%'"></ngx-shimmer-loading>
+            </div>
+        </ng-container>
+    </div>
+</ng-container> -->
+    <!-- <section class="media-banner" *ngIf="!getAllBlog">
+    <div class="container">
+        <div class="media-calltoaction">
+            <ngx-shimmer-loading [shape]="'square'" width="'100%'"></ngx-shimmer-loading>
+            <div class="calltoaction">
+                <ngx-shimmer-loading [shape]="'square'" width="'100%'"></ngx-shimmer-loading>
+            </div>
+        </div>
+    </div>
+</section> -->
+    <section class="media-banner">
+        <div class="container">
+            <div class="media-calltoaction">
+                <ng-container *ngFor="let item of getAllBlog; index as index">
+                    <div *ngIf="index==0">
+                        <div class="media" routerLink="/info/{{item.slug}}">
+                            <div class="spotlight-banner">
+                                <img src="{{item.image}}" alt="{{item.alt}}">
+                            </div>
+                            <div class="spotlight-desc">
+                                <h5>{{item.title}}</h5>
+                                <p>{{item.short_desc?.slice(0,130)}}</p>
+                                <p class="action-button">Read Article <i class="fa fa-arrow-right"></i></p>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <div></div>
+                <div class="calltoaction">
+                    <img src="{{imageurl}}calltoaction.jpeg" alt="">
+                    <div class="chemical">
+                        <button>
+                            <a (click)="routeOnSamePage('/shop')">Shop Chemicals</a>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</ng-container>
+
+<!-- <app-trending-post></app-trending-post> -->
+<div class="container trending-section">
+    <hr> Latest Posts
+    <hr>
+</div>
+<ng-container *ngIf="getAllBlog?.length>0">
+    <app-media-banner [data_input]="getAllBlog"></app-media-banner>
+</ng-container>
+<app-footer></app-footer>

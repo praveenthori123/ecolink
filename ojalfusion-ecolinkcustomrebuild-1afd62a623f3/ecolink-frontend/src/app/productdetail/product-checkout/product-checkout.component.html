@@ -1,0 +1,261 @@
+<div class="container">
+    <div class="checkout-section">
+        <div class="checkout-heading">
+            <h1>Checkout </h1>
+        </div>
+        <div class="checkout-body">
+            <div class="billing-detail">
+                <div class="card">
+                    <ng-container *ngIf="resSignupMsg.length>0">
+                        <div *ngIf="resSignupMsgCheck=='danger'" class="alert alert-danger" role="alert" style="justify-content: space-between;
+                display: flex;">
+                            {{ resSignupMsg }}
+                            <span class="icon-class"><i class="fa fa-close" style="cursor: pointer;"></i></span>
+                        </div>
+                        <div *ngIf="resSignupMsgCheck=='success'" class="alert alert-success" role="alert">
+                            {{ resSignupMsg }}
+                            <span class="icon-class"><i class="fa fa-close" style="cursor: pointer;"></i></span>
+                        </div>
+                        <div *ngIf="resSignupMsgCheck=='warning'" class="alert alert-warning" role="alert">
+                            {{ resSignupMsg }}
+                            <span class="icon-class"><i class="fa fa-close" style="cursor: pointer;"></i></span>
+                        </div>
+                    </ng-container>
+                    <div class="dropdown-address">
+                        <h3 *ngIf="user_credential">Shipping Details</h3>
+                        <h3 *ngIf="!user_credential">Billing & Shipping Details</h3>
+                        <!-- user address drop down -->
+                    </div>
+
+                    <!-- user billing form -->
+                    <!-- <app-billing-form [userBillingDetail]="billingUserDetail" [formShimmer]="formShimmer"
+                        (shippingDetail)="getshippingInfo($event)" (billingDetails)="BillingInfo($event)"
+                        (SelectedPaymentMethod)="PaymentCheck($event)"
+                        (gettaxexemptionvalue)="gettaxexemptionvalue($event)"
+                        (openclosefunction)="openclosefunction($event)">
+                    </app-billing-form> -->
+                    <app-billing-form [userBillingDetail]="billingUserDetail"
+                        (shippingDetail)="getSelectedShippingAddress($event)" (SelectedPaymentMethod)="PaymentCheck($event)"></app-billing-form>
+                </div>
+            </div>
+            <!-- shimmar effect true-->
+            <div class="your_order" *ngIf="checkoutShimmer">
+                <div class="card">
+                    <h3>Your Order</h3>
+                    <div class="checkout-product-heading m-4">
+                        <ng-container *ngFor="let data of [].constructor(3)">
+                            <ngx-shimmer-loading width="'100%'"></ngx-shimmer-loading>
+                        </ng-container>
+                        <div class="bank-detail">
+                            <div class="card my-3">
+                                <ngx-shimmer-loading width="'100%'"></ngx-shimmer-loading>
+                                <ngx-shimmer-loading width="'100%'"></ngx-shimmer-loading>
+                                <ngx-shimmer-loading width="'100%'"></ngx-shimmer-loading>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- shimmar effect false-->
+            <div class="your-order" *ngIf="!checkoutShimmer">
+                <div class="card">
+                    <h3>Your Order</h3>
+                    <div class="checkout-product-heading">
+                        <ul>
+                            <li>Product</li>
+                            <li>Total</li>
+                        </ul>
+                    </div>
+                    <!-- product detail on checkout page -->
+                    <ng-container *ngFor="let cart of CheckoutProduct">
+                        <div class="checkout-products">
+                            <ul *ngFor="let data of cart.carts">
+                                <li>{{data.product.name}} X {{data.quantity}}</li>
+                                <li>${{(data.product.sale_price *data.quantity) | number}}</li>
+                            </ul>
+                        </div>
+                        <div class="checkout-products-subtotal">
+                            <ul *ngIf="service_charge>0">
+                                <li>Lift Gate Service :</li>
+                                <li>${{service_charge}}</li>
+                            </ul>
+                            <ul>
+                                <li class="subtotal-list-element">Subtotal : </li>
+                                <li>${{(cart.payable -- service_charge) | number}}</li>
+                            </ul>
+                            <ul *ngIf="taxCheck">
+                                <li class="subtotal-list-element">Taxes : </li>
+                                <ng-container *ngIf="rate>0">
+                                    <li>${{rate}}</li>
+                                </ng-container>
+                                <ng-container *ngIf="rate==-1">
+                                    <div class="text-danger" style="font-size: 12px;">
+                                        {{taxerror}}
+                                    </div>
+                                </ng-container>
+                                <ng-container *ngIf="rate==0">
+                                    <span><i class="pi pi-spin pi-spinner" style="font-size: 1rem"></i></span>
+                                </ng-container>
+                            </ul>
+
+                            <ul>
+                                <li>
+                                    <div><b>Shipment Via</b></div>
+                                </li>
+                            </ul>
+                            <div class="Shipping_class mt-3">
+                                <ul>
+                                    <li>
+                                        <div class="Shipping_key">
+                                            <div class="d-flex " style="align-items: center;" *ngIf="!(!(saiaValues>0) && shippingCharge)">
+                                                <input type="radio" id="saia" name="shipping"
+                                                    [(ngModel)]="selectedShippingMethod" (click)="updatepaymentmethod()" value="saia" class="saia">
+                                                <label for="saia" class="">SAIA</label>
+                                            </div>
+                                            <div class="d-flex" style="align-items: center;" *ngIf="!((saiaValues>0) && shippingChargeError)">
+                                                <input type="radio" id="fedex" name="shipping" value="fedex"
+                                                    class="fedex" [(ngModel)]="selectedShippingMethod" (click)="updatepaymentmethod()">
+                                                <label for="fedex">FedEx</label>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <ng-container *ngIf="selectedShippingMethod=='fedex' && !fedexSpinner">
+                                        <span style="text-align: right;" *ngIf="shippingCharge">${{shippingCharge}}
+                                        </span>
+                                        <span style="text-align: right; font-size: 12px; " class="text-danger"
+                                            *ngIf="shippingChargeError.length > 0 && !shippingCharge">{{shippingChargeError}}
+                                        </span>
+                                        <span style="text-align: right; font-size: 12px; " class="text-danger"
+                                            *ngIf="shippingChargeError.length == 0 && !shippingCharge">{{shippingChargeError?shippingChargeError:'*Enter Valid ZIP Code'}}
+                                        </span>
+                                    </ng-container>
+                                    <ng-container *ngIf="fedexSpinner && selectedShippingMethod=='fedex'">
+                                        <span><i class="pi pi-spin pi-spinner" style="font-size: 1rem"></i></span>
+                                    </ng-container>
+
+                                    <ng-container *ngIf="selectedShippingMethod=='saia' && !saiaSpinner">
+                                        <span *ngIf="saiaValues > 0">${{saiaAmount}}</span>
+                                        <span *ngIf="saiaValues == 0" class="text-danger"
+                                            style="text-align: right;font-size: 12px;">*ZIP Code not Serviceable
+                                        </span>
+                                        <span *ngIf="saiaValues == -1" class="text-danger"
+                                            style="text-align: right;font-size: 12px;">*Enter Valid ZIP Code
+                                        </span>
+                                    </ng-container>
+                                    <ng-container *ngIf="saiaSpinner && selectedShippingMethod=='saia'">
+                                        <span><i class="pi pi-spin pi-spinner" style="font-size: 1rem"></i></span>
+                                    </ng-container>
+                                </ul>
+                            </div>
+                            <ul *ngIf="discountCheck && user_credential">
+                                <!-- <ng-container *ngIf="checkforcoupon"> -->
+                                <li class="subtotal-list-element"><input type="text" [(ngModel)]="couponValue"
+                                        class="form-control" style="padding: 0.25rem 0.5rem;">
+                                </li>
+                                <li><button (click)="couponButton()"
+                                        style="padding: 0.25rem 0.5rem;white-space:nowrap;">Apply
+                                        Coupon</button></li>
+                                <!-- </ng-container> -->
+                            </ul>
+                            <ul *ngIf="errormsg">
+                                <li class="subtotal-list-element">
+                                    <h6 class="text-danger" style="font-size:12px;">{{errormsg}}</h6>
+                                </li>
+                            </ul>
+                            <div *ngIf="couponCheck"
+                                style=" border: 1px solid rgba(0,0,0,.125);border-radius: 0.25rem;box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;margin-bottom: 5px;">
+                                <div style="text-align:right;padding:7px 12px">
+                                    <i class="fa fa-close" (click)="removediscount()"></i>
+                                </div>
+                                <ul>
+                                    <li class="subtotal-list-element">Coupon Code : </li>
+                                    <li style="color: #55b15c;"><mark>{{coupon_code}}</mark></li>
+                                </ul>
+                                <ul>
+                                    <li class="subtotal-list-element">Coupon Discount : </li>
+                                    <li style="color: #55b15c;">${{couponDiscount | number:'2.1-2'}}</li>
+                                </ul>
+                            </div>
+                            <!-- <ul *ngIf="couponCheck" style="justify-content: right;">
+                                <li><button style="padding: 0.25rem 0.5rem;white-space:nowrap;" (click)="removediscount()">Remove Coupon</button></li>
+                            </ul> -->
+                            <!-- <ng-container *ngFor="let item of CheckoutProduct">
+                                <ng-container *ngFor="let discounts of item.coupons">
+                                    <ul *ngIf="discountCheck" style="justify-content:normal;cursor: pointer;"
+                                        (click)="getDiscountvalue()">
+                                        <ng-container
+                                            *ngIf="(discounts.discount<100 && discounts.disc_type=='percent') || (discounts.discount<cart.payable && discounts.disc_type=='amount') ">
+                                            <p-radioButton name="discount" value="{{discounts.code}}"
+                                                [(ngModel)]="couponCode" inputId="discountmethod">
+                                            </p-radioButton>
+                                            <li class="subtotal-list-element" style="margin-left: 3px;">
+                                                {{discounts.code}} </li>
+                                        </ng-container>
+                                    </ul>
+                                </ng-container>
+                            </ng-container> -->
+                        </div>
+                        <div class="checkout-products-total">
+                            <ul>
+                                <li class="subtotal-list-element"><b>Total : </b></li>
+                                <li><b>${{(rate ? ((rate==-1)?0 : rate) : 0) -- cart.payable -- service_charge  --
+                                        (selectedShippingMethod == 'fedex' ?
+                                        (shippingCharge?shippingCharge:0) : saiaAmount) - couponDiscount | number
+                                        : '0.2-2'}}</b></li>
+                            </ul>
+                        </div>
+                    </ng-container>
+                    <div class="warning-message" *ngIf="paymentMethod">
+                        <!-- <span *ngIf="disableOrderButton" class="text-danger" style="font-size:12px;">*Please Fill the
+                            Billing & Shipping Details*</span> -->
+                        <!-- <span *ngIf="!billingDetails.valid" class="text-danger" style="font-size:12px;">
+                            *{{billingDetails.message}}* <br>
+                        </span>
+                        <span *ngIf="!shippingDataObj.valid" class="text-danger" style="font-size:12px;">
+                            *{{shippingDataObj.message}}*
+                        </span> -->
+                        <!-- <span *ngIf="!shippingDataObj.valid && !billingDetails.valid" class="text-danger" style="font-size:12px;">
+                            *Please Fill the Billing & Shipping Details*
+                        </span> -->
+                        <!-- <span *ngIf="user_credential==null && this.verifiedUser" class="text-danger" style="font-size:12px;">*Please Sign In*</span> -->
+                    </div>
+
+                    <div class="bank-detail">
+                        <div class="card mx-1">
+                            <h6>Direct bank transfer</h6>
+                            <p class="m-0">Make your payment directly into our bank account. Please use your Order ID as
+                                the payment reference. Your order will not be shipped until the funds have cleared in
+                                our account.
+                            </p>
+                            <div class="field-radiobutton mt-3" (click)="checkPaymentTab()">
+                                <p-radioButton name="payment_method1" value="cod" [(ngModel)]="selectedPaymentMethod"
+                                    inputId="payment_method1">
+                                </p-radioButton>
+                                <label for="payment_method1" class="mx-2"><b>Cash on Delivery</b></label>
+                            </div>
+                            <div class="field-radiobutton mt-3" (click)="checkPaymentTab()">
+                                <p-radioButton name="payment_method2" value="paypal" [(ngModel)]="selectedPaymentMethod"
+                                    inputId="payment_method2">
+                                </p-radioButton>
+                                <label for="payment_method2" class="mx-2"><b>PayPal</b></label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Paypal buttons -->
+                    <div class="paypal-integration" *ngIf="showPaypal && (saiaAmount>0 || shippingCharge) && ((rate>0) || !taxCheck)">
+                        <!-- <ng-container *ngIf="paymentCheck"> -->
+                        <ngx-paypal [config]="payPalConfig"></ngx-paypal>
+                        <!-- </ng-container> -->
+                    </div>
+                    <div class="place-order my-2 mx-1">
+                        <div class="proceed-button">
+                            <button pButton pRipple type="button" label="Place Order" (click)="getOrderInfo()"
+                                class="p-button-raised p-button-success" style="height:45px; width: 100%;"
+                                [disabled]="paymentCheck || selectedPaymentMethod=='' || !(saiaValues>0 || shippingCharge) || (!(rate>0) && taxCheck)  || !shippingDataObj.valid "></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

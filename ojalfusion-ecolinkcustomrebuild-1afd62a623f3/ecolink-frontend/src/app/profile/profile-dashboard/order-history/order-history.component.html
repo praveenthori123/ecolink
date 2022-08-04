@@ -1,0 +1,95 @@
+<div class="Order-History-section" *ngIf="showdesc == 'Order History'">
+    <h3>Order History</h3>
+    <!-- <div class="order-history-header">
+        <div class="search-ordered-item">
+            <input type="text" pInputText placeholder="Search Ordered Item...." [(ngModel)]="searchItem"
+                (input)="getSuggestions()" />
+            <button pButton pRipple type="button" label="Search" class="p-button-success"
+                (click)="FetchSearchedData()"></button>
+        </div>
+        <div class="card history_product_search" *ngIf="suggestions">
+            <ul *ngFor="let i of searchProductArray | searchPipe : searchItem">
+                <li (click)="getselecteddata(i.name)">{{i.name}}</li>
+            </ul>
+        </div>
+    </div> -->
+
+    <!-- list-card -->
+    <div class="history-list-card">
+        <div class="table-div" *ngIf="show">
+            <ng-container *ngFor="let data of orderData; index as index">
+                <div class="my-2" *ngIf="data.items?.length > 0">
+                    <table class="table">
+                        <thead>
+                            <tr class="head_row">
+                                <th scope="col">Order ID # {{data.id}}</th>
+                                <!-- <th></th>
+                                <th></th>
+                                <th></th> -->
+                                <th class="total_amount">Order Date : {{data.created_at | date:"MM/dd/yyyy"}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="body_row">
+                                <td class="total_amount">
+                                    <p> <span style="font-weight: bold;">Total Amount :</span> ${{data.total_amount | number}}
+                                    </p>
+                                </td>
+                                <!-- <td></td>
+                                <td></td>
+                                <td></td> -->
+                                <td class="total_amount">
+                                        <p *ngIf="spinnercheck">Order Status : 
+                                            <span > <i class="pi pi-spin pi-spinner" style="font-size: 1rem"></i></span></p>
+                                            <div *ngIf="!spinnercheck">
+                                                <p *ngIf="data.order_status == 'pending'">Order Status : 
+                                                    <span class="status text-warning"> {{data.order_status}} </span></p>
+                                                <p *ngIf="data.order_status == 'complete'">Order Status : 
+                                                    <span class="status text-success"> {{data.order_status}} </span></p>
+                                                <p *ngIf="data.order_status == 'cancelled'">Order Status : 
+                                                    <span class="status text-danger"> {{data.order_status}} </span></p>
+                                            </div>
+                                </td>
+                            </tr>
+                            <tr *ngFor="let item of data.items" class="image_row">
+                                <td>
+                                    <div class="cart_image" style="cursor: pointer;">
+                                        <img src="{{item.product.image}}? {{item.product.image}} : 'https://crimzonworld.com/wp-content/uploads/2016/08/dummy-prod-1.jpg'"
+                                            >
+                                    </div>
+                                </td>
+                                <input type="hidden" [value]="item.order_id" [(ngModel)] = "order_id">
+                                <td class="product_detail">
+                                    <h6 class="head">{{item.product.name}}</h6>
+                                    <p style="margin-bottom:0.5rem ;"><span style="font-weight: bold;">Quantity :</span>
+                                        {{item.quantity}}</p>
+                                    <p><span style="font-weight: bold;">Product Amount : </span>$
+                                        {{item.product.sale_price | number}}</p>
+                                    <p class="order-show-button" routerLink="/shop/{{item.product.category.name}}/{{item.product.slug}}">Show Details</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <!-- <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td> -->
+                                <td><p class="cancel-btn" (click)="orderCancel(data.id)"
+                                    *ngIf="data.payment_via=='cod' && data.order_status == 'pending'">Cancel Order</p></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- <ng-template pTemplate="header">
+                    <tr class="heading-row">
+                        <th></th>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>SubTotal</th>
+                        <th>Action</th>
+                    </tr>
+                </ng-template> -->
+            </ng-container>
+        </div>
+    </div>
+</div>

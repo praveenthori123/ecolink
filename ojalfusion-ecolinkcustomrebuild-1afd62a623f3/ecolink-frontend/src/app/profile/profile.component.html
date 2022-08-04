@@ -1,0 +1,53 @@
+<app-header></app-header>
+<div class="container">
+    <div class="profile-section my-2">
+        <div class="profile-heading">
+            <h2>My Account</h2>
+        </div>
+        <div class="card">
+            <div class="profile-side-bar">
+                <h4 class="mx-1">Navigation</h4>
+                <ul>
+                    <li (click)="togglebutton='Dashboard'">Dashboard</li>
+                    <li (click)="togglebutton='Edit Profile'">Edit Profile</li>
+                    <li (click)="togglebutton='Order History'">Order History</li>
+                    <li (click)="togglebutton='Addresses'">Addresses</li>
+                    <li (click)="togglebutton='Wishlist'" routerLink="/shop/wishlist">Wishlist</li>
+                    <!-- <li (click)="togglebutton='Return Order'">Return Order</li> -->
+                    <li (click)="getUserLogout()">Logout</li>
+                </ul>
+            </div>
+            <nav class="responsive-nav">
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" style="float: right; margin: 20px; box-shadow: none;" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span (click)="openNavbar()" *ngIf="!openNav"><i style="font-size:24px"
+                                class="fa">&#xf0c9;</i></span>
+                        <span (click)="openNavbar()" *ngIf="openNav"><i style="font-size:24px "
+                                class="fa">&#xf00d;</i></span>
+                    </button>
+                    <div class="open-nav" *ngIf="openNav">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li (click)="togglebutton='Dashboard'" (click)="openNavbar()">Dashboard</li>
+                            <li (click)="togglebutton='Edit Profile'" (click)="openNavbar()">Edit Profile</li>
+                            <li (click)="togglebutton='Order History'" (click)="openNavbar()">Order History</li>
+                            <li (click)="togglebutton='Addresses'" (click)="openNavbar()">Addresses</li>
+                            <li (click)="togglebutton='Wishlist'" routerLink="/shop/wishlist" (click)="openNavbar()">
+                                Wishlist</li>
+                            <li (click)="togglebutton='Return Order'" (click)="openNavbar()">
+                                Return Order</li>
+                            <li (click)="getUserLogout()">Logout</li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <div class="profile-sidebar-desc">
+                <app-addresses [showdesc]="togglebutton"></app-addresses>
+                <app-adress-modal [showdesc]="togglebutton"></app-adress-modal>
+                <app-profile-dashboard [showdesc]="togglebutton" (itemEvent)="event($event)"></app-profile-dashboard>
+                <app-edit-profile [showdesc]="togglebutton"></app-edit-profile>
+                <app-order-history [showdesc]="togglebutton"> </app-order-history>
+            </div>
+        </div>
+    </div>
+</div>
+<app-footer></app-footer>

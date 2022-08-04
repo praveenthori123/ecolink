@@ -1,0 +1,230 @@
+.media-section {
+    .container {
+        .head-section {
+            position: relative;
+            text-align: center;
+            padding: 20px 0;
+            span {
+                width: 50%;
+                input {
+                    width: 100%;
+                    border-radius: 20px;
+                    border: 1px solid lightgray;
+                    height: 35px;
+                    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+                    padding-left: 25px;
+                }
+                i {
+                    cursor: pointer;
+                    padding-right: 10px;
+                }
+            }
+            .ListSuggested {
+                width: 50%;
+                position: absolute;
+                top: 60px;
+                left: 25%;
+                background: #ececec;
+                z-index: 99;
+                border-radius: 10px;
+                ul {
+                    margin-bottom: 0;
+                    padding-left: 0;
+                    li {
+                        cursor: pointer;
+                        padding: 10px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+::placeholder {
+    color: #a6a6b0;
+}
+
+.media-banner {
+    margin: 30px 0;
+    .container {
+        .media-calltoaction {
+            display: grid;
+            grid-template-columns: 65% 5% 30%;
+            .media {
+                cursor: pointer;
+                box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+                border: 1px solid #d7d1d1;
+                border-radius: 10px;
+                display: grid;
+                grid-template-columns: 70% 30%;
+                .spotlight-banner {
+                    height: 330px;
+                    img {
+                        height: 100%;
+                        width: 100%;
+                        border-top-left-radius: 10px;
+                        border-bottom-left-radius: 10px;
+                    }
+                }
+                .spotlight-desc {
+                    background: whitesmoke;
+                    border-top-right-radius: 10px;
+                    border-bottom-right-radius: 10px;
+                    padding: 10px;
+                    text-align: center;
+                    h5 {
+                        font-weight: 700;
+                        padding: 15px 0;
+                    }
+                    .action-button {
+                        font-size: 15px;
+                        font-weight: 700;
+                    }
+                }
+            }
+            .calltoaction {
+                background-image: url("/assets/calltoaction.jpeg");
+                cursor: pointer;
+                box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+                border: 1px solid #d7d1d1;
+                border-radius: 10px;
+                background-size: cover;
+                align-items: center;
+                position: relative;
+                img {
+                    height: 100%;
+                    width: 100%;
+                    object-fit: cover;
+                    border-radius: 10px;
+                }
+                .chemical {
+                    position: absolute;
+                    width: 100%;
+                    bottom: 20px;
+                    text-align: center;
+                    button {
+                        border: 1px solid var(--primary);
+                        background: var(--primary);
+                        border-radius: 5px;
+                        padding: 5px 10px;
+                        bottom: 0;
+                        a {
+                            color: white;
+                            text-decoration: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+::ng-deep {
+    .media-calltoaction {
+        .ngx-shimmer {
+            height: 420px !important;
+            width: 90%;
+        }
+        .calltoaction {
+            .ngx-shimmer {
+                width: 400px !important;
+            }
+        }
+    }
+    .media-section {
+        .container {
+            .ngx-shimmer {
+                width: 50%;
+                height: 40px;
+                border-radius: 50px !important;
+            }
+        }
+    }
+}
+
+.trending-section {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    hr {
+        width: 40%;
+    }
+}
+
+@media (max-width: 1200px) {
+    .media-banner {
+        .container {
+            .media-calltoaction {
+                .media {
+                    .spotlight-banner {
+                        height: 378px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 992px) {
+    .media-banner {
+        .container {
+            .media-calltoaction {
+                grid-template-columns: 50% 5% 45%;
+                .media {
+                    grid-template-columns: 100%;
+                    .spotlight-banner {
+                        height: 200px;
+                        img {
+                            border-top-right-radius: 10px;
+                            border-bottom-left-radius: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .media-banner {
+        .container {
+            max-width: 700px;
+            .media-calltoaction {
+                grid-template-columns: 50% 5% 45%;
+                .media {
+                    grid-template-columns: 100%;
+                    .spotlight-banner {
+                        height: 150px;
+                        img {
+                            border-top-right-radius: 10px;
+                            border-bottom-left-radius: 0;
+                        }
+                    }
+                    .spotlight-desc {
+                        h5 {
+                            font-size: 0.8rem;
+                            padding: 0;
+                        }
+                        p {
+                            font-size: 0.9rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 425px) {
+    .media-banner {
+        .container {
+            .media-calltoaction {
+                display: block;
+                .calltoaction {
+                    height: 250px;
+                    margin: 20px 0;
+                }
+            }
+        }
+    }
+}
